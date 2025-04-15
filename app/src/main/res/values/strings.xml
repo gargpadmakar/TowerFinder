@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">JetPack Compose</string>
+    <string name="welcome_to_app">Welcome to Cell ID</string>
+    <string name="developer_name">Hey everyone, welcome to a new post! Today, I’m going to make Retrofit in Android easier and faster to use. If you’ve worked with Android development before, you’re probably familiar with Retrofit—it’s a popular library …</string>
+</resources>
