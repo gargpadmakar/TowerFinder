@@ -39,9 +39,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.padmakar.jetpackcomposeintroduction.R
-import com.padmakar.jetpackcomposeintroduction.components.LoadingDialog
 import com.padmakar.jetpackcomposeintroduction.components.ShowLoadingUI
-import com.padmakar.jetpackcomposeintroduction.core.BaseEventHandler
 import com.padmakar.jetpackcomposeintroduction.navigation.navigateToForgotPassword
 import com.padmakar.jetpackcomposeintroduction.navigation.navigateToLoginOTP
 import com.padmakar.jetpackcomposeintroduction.navigation.navigateToRegister
@@ -170,7 +168,7 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel = viewMo
                         Button(
                             onClick = {
                                 if (viewModel.validateForm()) {
-                                    viewModel.performLogin {
+                                     viewModel.performLogin {
                                         navigateToLoginOTP(
                                             navController,
                                             uiState.emailOrPhone,
@@ -231,12 +229,12 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel = viewMo
         }
     }
     // LoadingDialog should be added here to appear in the center
-    ShowLoadingUI(isLoading = viewModel.isLoading.value)
+     ShowLoadingUI(isLoading = viewModel.isLoading.collectAsState().value)
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
-fun LoginScreen() {
+fun LoginScreenPreview() {
     val navController = rememberNavController()
     LoginScreen(navController)
 }

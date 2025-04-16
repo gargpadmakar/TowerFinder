@@ -23,6 +23,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -47,6 +48,7 @@ import androidx.navigation.compose.rememberNavController
 import com.padmakar.jetpackcomposeintroduction.R
 import com.padmakar.jetpackcomposeintroduction.components.OTP_VIEW_TYPE_BOX
 import com.padmakar.jetpackcomposeintroduction.components.OtpView
+import com.padmakar.jetpackcomposeintroduction.core.UiEvent
 import com.padmakar.jetpackcomposeintroduction.screen.login.viewmodel.LoginOtpViewModel
 
 @Composable
@@ -58,6 +60,14 @@ fun LoginOTPScreen(
 ) {
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.eventFlow.collect { event ->
+            if (event is UiEvent.StartActivity) {
+                context.startActivity(event.intent)
+            }
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -190,9 +200,8 @@ fun LoginOTPScreen(
                     Button(
                         onClick = {
                              if(viewModel.validateOtp()){
-
+                                 viewModel.redirectToMainActivity(context)
                              }
-                            Toast.makeText(context, "OTP Verify Successfully", Toast.LENGTH_SHORT).show()
                             // Trigger your verify API here
                         },
                         modifier = Modifier

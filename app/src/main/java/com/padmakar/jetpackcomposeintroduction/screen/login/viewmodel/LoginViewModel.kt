@@ -3,7 +3,7 @@ package com.padmakar.jetpackcomposeintroduction.screen.login.viewmodel
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.padmakar.jetpackcomposeintroduction.core.BaseEventHandler
+import com.padmakar.jetpackcomposeintroduction.core.BaseViewModel
 import com.padmakar.jetpackcomposeintroduction.screen.login.Validators
 import com.padmakar.jetpackcomposeintroduction.screen.login.model.LoginUiState
 import kotlinx.coroutines.delay
@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class LoginViewModel(application: Application) : BaseEventHandler(application) {
+class LoginViewModel: BaseViewModel() {
 
     private val _uiState = MutableStateFlow(LoginUiState())
     val uiState: StateFlow<LoginUiState> = _uiState
@@ -61,13 +61,14 @@ class LoginViewModel(application: Application) : BaseEventHandler(application) {
     }
 
     fun performLogin(onLoginComplete: () -> Unit) {
-        showLoading()
         viewModelScope.launch {
+            showLoading(true) // Show loading indicator (pass true)
             delay(2000) // Simulating API or DB operation
-            hideLoading()
-            onLoginComplete()
+            showLoading(false) // Hide loading indicator (pass false)
+            onLoginComplete() // Call the callback after login is complete
         }
     }
+
 
 
 
