@@ -1,6 +1,7 @@
 package com.padmakar.jetpackcomposeintroduction
 
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -21,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.startActivity
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
@@ -31,6 +33,8 @@ import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.padmakar.jetpackcomposeintroduction.components.CustomAppBar
+import com.padmakar.jetpackcomposeintroduction.components.LocationSearchBar
+import com.padmakar.jetpackcomposeintroduction.screen.profile.AccountActivity
 
 
 class TowerLocationActivity:ComponentActivity() {
@@ -45,6 +49,7 @@ class TowerLocationActivity:ComponentActivity() {
 
 @Composable
 fun MapScreen() {
+    val context = LocalContext.current
     val currentLocation = LatLng(28.4164, 77.0932)
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(currentLocation, 15f)
@@ -70,7 +75,10 @@ fun MapScreen() {
         CustomAppBar(
             title = "Cell ID",
             onBackClick = { /* Handle back */ },
-            onProfileClick = { /* Handle profile */ },
+            onProfileClick = { /* Handle profile */
+                val intent = Intent(context, AccountActivity::class.java) // Create an intent for AccountActivity
+                context.startActivity(intent) // Start the activity using the context
+            },
             switchChecked = isSatelliteView,
             onSwitchChanged = { isSatelliteView = it }
         )
@@ -95,16 +103,27 @@ fun MapScreen() {
                 )
             }
 
-            // 🔹 Overlay View: Example - Floating Info Box
             Column(
                 modifier = Modifier
                     .align(Alignment.TopCenter)
                     .padding(top = 16.dp)
-                    .background(Color.White.copy(alpha = 0.9f), shape = MaterialTheme.shapes.medium)
-                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                    .padding(horizontal = 8.dp, vertical = 8.dp)
             ) {
-                Text("Tower Info", fontWeight = FontWeight.Bold, fontSize = 16.sp)
-                Text("Sector 61, Gurugram", fontSize = 14.sp)
+                // Search Bar Location AppBar
+                var searchQuery by remember { mutableStateOf("Gurgaon") }
+                var radius by remember { mutableStateOf(1) }
+                LocationSearchBar(
+                    query = searchQuery,
+                    onQueryChanged = { searchQuery = it },
+                    onClearClick = { searchQuery = "" },
+                    onSearchClick = {
+                        // 🔍 Trigger search using searchQuery and radius
+                    },
+                    onRadiusChange = { newRadius ->
+                        radius = newRadius.coerceIn(1, 50) // Optional: limit radius range
+                    },
+                    radiusKm = radius
+                )
             }
         }
     }

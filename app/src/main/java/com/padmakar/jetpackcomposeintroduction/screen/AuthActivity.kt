@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
-import com.padmakar.jetpackcomposeintroduction.graph.NavGraph
+import com.padmakar.jetpackcomposeintroduction.graph.AuthNavGraph
 
 class AuthActivity:ComponentActivity() {
 
@@ -23,7 +23,7 @@ class AuthActivity:ComponentActivity() {
 @Composable
 fun AuthScreen(){
     val navController = rememberNavController()
-    NavGraph(navController = navController)
+    AuthNavGraph(navController = navController)
 }
 
 @Preview

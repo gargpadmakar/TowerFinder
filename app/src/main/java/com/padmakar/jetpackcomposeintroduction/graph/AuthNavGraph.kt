@@ -14,9 +14,9 @@ import com.padmakar.jetpackcomposeintroduction.screen.login.view.LoginScreen
 import com.padmakar.jetpackcomposeintroduction.screen.register.view.RegisterOTPScreen
 import com.padmakar.jetpackcomposeintroduction.screen.register.view.RegisterScreen
 
-// graph/NavGraph.kt
+// graph/AuthNavGraph.kt
 @Composable
-fun NavGraph(navController: NavHostController) {
+fun AuthNavGraph(navController: NavHostController) {
     NavHost(navController = navController, startDestination = Routes.Login.route) {
         composable(Routes.Login.route) { LoginScreen(navController) }
         composable(Routes.Register.route) { RegisterScreen(navController) }

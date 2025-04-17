@@ -3,11 +3,13 @@ package com.padmakar.jetpackcomposeintroduction.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -72,15 +74,24 @@ fun CustomAppBar(
 
 
             // Profile Icon
+            val interactionSource = remember { MutableInteractionSource() }
+            val rippleIndication = rememberRipple(bounded = true, color = Color.Gray)
+
             Icon(
                 imageVector = Icons.Default.AccountCircle,
                 contentDescription = "Profile",
                 tint = Color.White,
                 modifier = Modifier
                     .size(40.dp)
-                    .clickable { onProfileClick() }
+                    .clickable(
+                        indication = rippleIndication, // Custom ripple effect
+                        interactionSource = interactionSource
+                    ) {
+                        onProfileClick()  // Handle profile click action
+                    }
                     .padding(start = 6.dp)
             )
+
         }
     }
 }
